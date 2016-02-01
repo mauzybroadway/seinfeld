@@ -1,15 +1,13 @@
-<<<<<<< HEAD
 #include <SD.h>                      // need to include the SD library
-//#define SD_ChipSelectPin 53  //example uses hardware SS pin 53 on Mega2560
 #define SD_ChipSelectPin 10  //using digital pin 4 on arduino nano 328
 #include <TMRpcm.h>           //  also need to include this library...
 #include "pitches.h"
 
-TMRpcm tmrpcm;   // create an object for use in this sketch
-char mychar;
+TMRpcm tmrpcm;   
+char riff[] = "riff00.wav"; //default riff
 
 void setup(){
-
+  
   tmrpcm.speakerPin = 9; //11 on Mega, 9 on Uno, Nano, etc
   Serial.begin(9600);
   
@@ -17,41 +15,19 @@ void setup(){
     Serial.println("SD fail");  
     return;   // don't do anything more if not
   }
-  Serial.println("helllo");
-  tmrpcm.play("1.wav"); //the sound file "music" will play each time the arduino powers up, or is reset
-
-}
-
-void loop(){  
   
-  if(Serial.available()){   
-    mychar = Serial.read();
-    if(mychar == 'o'){ //send the letter p over the serial monitor to start playback
-      tmrpcm.play("cd.wav");
-    } 
-    else if(mychar == '0'){ //send the letter p over the serial monitor to start playback
-      tmrpcm.play("0.wav");
-    }
-    else if(mychar == '1'){ //send the letter p over the serial monitor to start playback
-      tmrpcm.play("1.wav");
-    }
-        else if(mychar == 'a'){ //send the letter p over the serial monitor to start playback
-      tmrpcm.play("10.wav");
-    }
-
-  }
-
+  //playRandRiff();
 }
 
-
-=======
-#include <Arduino.h>
-
-void setup() {
-
+void loop(){ 
+  playRandRiff();
+  delay(5000);
 }
 
-void loop() {
-  
+void playRandRiff() {
+  int num = random(0, 29);
+  // convert random number to ascii and input into riff string
+  riff[5] = num%10+0x30;  
+  riff[4] = (num-num%10)/10+0x30;  
+  tmrpcm.play(riff);
 }
->>>>>>> 639cfc796e91ba2a498959eb020f9d44a2f6e7cd
